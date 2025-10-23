@@ -100,6 +100,32 @@ var (
 	EKSAuthenticationModeAPIAndConfigMap = EKSAuthenticationMode("api_and_config_map")
 )
 
+// AccessEntryType defines the type of an access entry
+type AccessEntryType string
+
+func (a AccessEntryType) APIValue() *string {
+	v := strings.ToUpper(string(a))
+	return &v
+}
+
+var (
+	AccessEntryTypeStandard      = AccessEntryType("standard")
+	AccessEntryTypeEC2Linux      = AccessEntryType("ec2_linux")
+	AccessEntryTypeEC2Windows    = AccessEntryType("ec2_windows")
+	AccessEntryTypeFargateLinux  = AccessEntryType("fargate_linux")
+	AccessEntryTypeEC2           = AccessEntryType("ec2")
+	AccessEntryTypeHybridLinux   = AccessEntryType("hybrid_linux")
+	AccessEntryTypeHyperpodLinux = AccessEntryType("hyperpod_linux")
+)
+
+// AccessScopeType defines the scope type for an access policy
+type AccessScopeType string
+
+var (
+	AccessScopeTypeCluster = AccessScopeType("cluster")
+	AccessScopeTypeNamespace = AccessScopeType("namespace")
+)
+
 var (
 	// DefaultEKSControlPlaneRole is the name of the default IAM role to use for the EKS control plane
 	// if no other role is supplied in the spec and if iam role creation is not enabled. The default
@@ -239,24 +265,6 @@ type AddonIssue struct {
 	Message *string `json:"message,omitempty"`
 	// ResourceIDs is a list of resource ids for the issue
 	ResourceIDs []string `json:"resourceIds,omitempty"`
-}
-
-// UpgradePolicy defines the support policy to use for the cluster.
-type UpgradePolicy string
-
-var (
-	// UpgradePolicyExtended indicates that the cluster will enter into extended support once the Kubernetes version reaches end of standard support.
-	// You will incur extended support charges with this setting.
-	// You can upgrade your cluster to a standard supported Kubernetes version to stop incurring extended support charges.
-	UpgradePolicyExtended = UpgradePolicy("extended")
-
-	// UpgradePolicyStandard indicates that the cluster is eligible for automatic upgrade at the end of standard support.
-	// You will not incur extended support charges with this setting but your EKS cluster will automatically upgrade to the next supported Kubernetes version in standard support.
-	UpgradePolicyStandard = UpgradePolicy("standard")
-)
-
-func (e UpgradePolicy) String() string {
-	return string(e)
 }
 
 const (
